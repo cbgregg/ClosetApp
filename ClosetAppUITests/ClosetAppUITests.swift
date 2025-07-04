@@ -15,7 +15,7 @@ final class ClosetAppUITests: XCTestCase {
         // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        // In UI tests it's important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
@@ -29,13 +29,23 @@ final class ClosetAppUITests: XCTestCase {
         app.launch()
 
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        // Verify the app launched successfully by checking for expected UI elements
+        let helloWorldText = app.staticTexts["Hello, world!"]
+        XCTAssertTrue(helloWorldText.exists, "Hello, world! text should be visible")
+        
+        // Verify the globe image is present
+        let globeImage = app.images["globe"]
+        XCTAssertTrue(globeImage.exists, "Globe image should be visible")
     }
 
     @MainActor
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
+        // Fixed: Properly manage app lifecycle for consistent performance measurements
         measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
+            let app = XCUIApplication()
+            app.launch()
+            app.terminate()
         }
     }
 }
